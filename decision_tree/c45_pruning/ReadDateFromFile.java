@@ -1,5 +1,7 @@
 package c45_pruning;
 
+import c45_pruning.ConfigsAndEnums.Config;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package c45_pruning;
+package c45_pruning.ConfigsAndEnums;
 
 public class Config {
 

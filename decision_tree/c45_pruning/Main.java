@@ -1,5 +1,7 @@
 package c45_pruning;
 
+import c45_pruning.ConfigsAndEnums.Config;
+
 import java.util.ArrayList;
 
 public class Main {
@@ -13,7 +15,6 @@ public class Main {
         ArrayList<DataItem> testDataItems = readDateFromFile.readTestData();
         Dataset dataset=new Dataset(trainDataItems,null,testDataItems,allFeatures);
         dataset.setClassFeature(allFeatures.get(allFeatures.size()-1));
-        System.out.println(dataset);
 
 
     }

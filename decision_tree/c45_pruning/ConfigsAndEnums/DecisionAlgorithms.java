@@ -1,0 +1,6 @@
+package c45_pruning.ConfigsAndEnums;
+
+public enum DecisionAlgorithms {
+    ID3,C45,CART,RANDOM_FOREST,
+    ID3_WITH_PRUNING,C45_WITH_PRUNING,CART_WITH_PRUNING,RANDOM_FOREST_WITH_PRUNING
+}
