@@ -25,7 +25,7 @@ public class DataItem {
         Set<String>keyset=dataItemFeatures.keySet();
         //output all the features of  a dataItem
         for(String key :keyset){
-            s+=dataItemFeatures.get(key)+" ";
+            s+=" key= "+key+" data= "+dataItemFeatures.get(key)+",";
         }
         s += label + "\n";
 

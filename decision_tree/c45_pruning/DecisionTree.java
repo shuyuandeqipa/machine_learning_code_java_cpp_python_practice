@@ -62,4 +62,16 @@ public class DecisionTree {
     public void setTestingAccuracy(double testingAccuracy) {
         this.testingAccuracy = testingAccuracy;
     }
+
+    @Override
+    public String toString() {
+        return "DecisionTree{" +
+                "rootNode=" + rootNode +
+                ", algorithm=" + algorithm +
+                ", hasUsedPruning=" + hasUsedPruning +
+                ", trainingAccuracy=" + trainingAccuracy +
+                ", validatingAccuracy=" + validatingAccuracy +
+                ", testingAccuracy=" + testingAccuracy +
+                '}';
+    }
 }

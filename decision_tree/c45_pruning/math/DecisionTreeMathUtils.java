@@ -5,24 +5,28 @@ import c45_pruning.DataItem;
 import c45_pruning.Dataset;
 import c45_pruning.ReadDateFromFile;
 import com.sun.org.apache.bcel.internal.generic.FieldGen;
+import sun.rmi.runtime.Log;
 
 
 import java.util.*;
+import java.util.logging.Logger;
 
 //All the code in this class in for build the decision tree.
 //We can use the math function there to build id3, c4.5 and CART tree.
 public class DecisionTreeMathUtils {
 
     public static String selectBestFeature(ArrayList<DataItem> dataItems, ArrayList<String> features, FeatureSelectCriterions criterion) {
-        if(dataItems.size()<=0 || features.size()<=0)return "";
+        if (dataItems.size() <= 0 || features.size() <= 0) return "";
 
         if (criterion == FeatureSelectCriterions.GAIN_RATIO) {
             // 使用启发式的方法，先从划分属性中选择新星增益高于平均水平的属性，再从中选择增益率最高的
             ArrayList<Double> informationGains = new ArrayList<>();
+            System.out.println("features.size()=" + features.size());
             for (String feature : features) {
                 InformationGain gain = new InformationGain(dataItems, feature);
                 informationGains.add(gain.getGain());
             }
+            System.out.println("informationGains = "+informationGains);
             // compute the mean of all the gains
             double meanGains = MathUtils.mean(informationGains);
             ArrayList<String> selectedFeatures = new ArrayList<>();
@@ -37,7 +41,8 @@ public class DecisionTreeMathUtils {
                 GainRatio gainRatio = new GainRatio(dataItems, feature);
                 gainRatios.add(gainRatio.getGainRatio());
             }
-
+            System.out.println("features = "+features);
+            System.out.println("bestGainRatios = " + gainRatios);
             double maxRatio = -Double.MAX_VALUE;
             String maxFeature = "";
             for (int i = 0; i < gainRatios.size(); i++) {
@@ -46,6 +51,7 @@ public class DecisionTreeMathUtils {
                     maxFeature = selectedFeatures.get(i);
                 }
             }
+            System.out.println("maxRatio =" + maxRatio + "，bestFeature = " + maxFeature);
             return maxFeature;
 
         }
@@ -114,6 +120,8 @@ public class DecisionTreeMathUtils {
         String feature;
         double gain;//the information gain
 
+        String loggerClass;
+
         public double getGain() {
             return gain;
         }
@@ -122,19 +130,23 @@ public class DecisionTreeMathUtils {
             this.dataItems = dataItems;
 
             this.feature = feature;
+            loggerClass = "InformationGainLogger";
             this.gain = computeInformationGain(this.dataItems, this.feature);
         }
 
         private double computeInformationGain(ArrayList<DataItem> dataItems, String featureKey) {
             double gain = 0.0;
 
+            System.out.println(loggerClass + " :" + "featureKey= " + featureKey);
             double dataItemsEntropy = new InformationEntropy(dataItems).getEntropy();
             gain = dataItemsEntropy;
             // get all the classes in this feature
             Set<String> allDataItemFeatureOfThisFeature = new HashSet<>();
             for (DataItem dataItem : dataItems) {
+                System.out.println(loggerClass + " :" + "DataItems " + dataItem);
                 allDataItemFeatureOfThisFeature.add(dataItem.getDataItemFeatureWithFeature(featureKey));
             }
+            System.out.println("allDataItemFeatureOfThisFeature:" + allDataItemFeatureOfThisFeature);
 
             for (String featureClasses : allDataItemFeatureOfThisFeature) {
                 ArrayList<DataItem> tempDataItems = Dataset.getDataItemsWithDataItemFeature(dataItems, featureKey, featureClasses);
@@ -147,7 +159,7 @@ public class DecisionTreeMathUtils {
 
     // the code here is used to test weather the InformationGain is right;
     public static void main(String[] args) {
-        String xigua = "E:\\machineLearningJavaCpp\\machine_learning_code_java_cpp_python_practice\\machine_learning_java\\src\\id4_pruning\\data\\xigua.txt";
+        String xigua = "E:\\machineLearningJavaCpp\\machine_learning_code_java_cpp_python_practice\\machine_learning_java\\src\\c45_pruning\\data\\xigua.txt";
         ReadDateFromFile readDateFromFile = new ReadDateFromFile();
         ArrayList<DataItem> dataItems = readDateFromFile.readData(xigua);
         System.out.println(dataItems.get(0).outputFeatureKeys());
@@ -205,12 +217,16 @@ public class DecisionTreeMathUtils {
 
         // just test the GainRatio algorithm
         public static void main(String[] args) {
-            String xigua = "E:\\machineLearningJavaCpp\\machine_learning_code_java_cpp_python_practice\\machine_learning_java\\src\\c45_pruning\\data\\xigua.txt";
-            ReadDateFromFile readDateFromFile = new ReadDateFromFile();
+            String xigua = "E:\\machineLearningJavaCpp\\machine_learning_code_java_cpp_python_practice\\machine_learning_java\\src\\c45_pruning\\data\\trainData.txt";
+            ReadDateFromFile readDateFromFile = new ReadDateFromFile(xigua, xigua, xigua);
             ArrayList<DataItem> dataItems = readDateFromFile.readData(xigua);
             System.out.println(dataItems);
-            GainRatio gainRatio = new GainRatio(dataItems, "色泽");
-            System.out.println(gainRatio.getGainRatio());
+            ArrayList<String> features = readDateFromFile.readAllFeatures();
+            for (String feature : features) {
+                GainRatio gainRatio = new GainRatio(dataItems, feature);
+                System.out.println("feature= " + feature + " , gainRatio= " + gainRatio.getGainRatio());
+            }
+
         }
     }
 

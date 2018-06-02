@@ -9,17 +9,23 @@ public class TreeNode {
     int layer;
     TreeNodeType nodeType;
     ArrayList<Integer>ids;// all the id of dataItems in this node
-    String nodeDivisionFeature;
+    String nodeDivisionFeature;// the feature to divide the dataItems
     ArrayList<TreeNode>children;// all the child of the node
-    boolean hasDoPruning;// whether the node is pruned,default is false
+    boolean needDoPruning;// whether the node is pruned,default is false
     String leafClassInfo;// if the node is a leaf node ,we will mark the class for the dataItem
 
     public TreeNode() {
+        ids=null;
+        nodeDivisionFeature="";
         this.pointerInfo = null;
         this.layer=1;
-        this.hasDoPruning=false;
+        this.children=new ArrayList<>();
+        this.needDoPruning=false;
         this.nodeType=TreeNodeType.INNER_NODE;
         this.leafClassInfo=null;
+    }
+    public void addChild(TreeNode child){
+        this.children.add(child);
     }
 
     //*********************************************************************
@@ -71,12 +77,12 @@ public class TreeNode {
         this.children = children;
     }
 
-    public boolean isHasDoPruning() {
-        return hasDoPruning;
+    public boolean isNeedDoPruning() {
+        return needDoPruning;
     }
 
-    public void setHasDoPruning(boolean hasDoPruning) {
-        this.hasDoPruning = hasDoPruning;
+    public void setNeedDoPruning(boolean needDoPruning) {
+        this.needDoPruning = needDoPruning;
     }
 
     public String getLeafClassInfo() {
@@ -85,5 +91,19 @@ public class TreeNode {
 
     public void setLeafClassInfo(String leafClassInfo) {
         this.leafClassInfo = leafClassInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "TreeNode{" +
+                "pointerInfo='" + pointerInfo + '\'' +
+                ", layer=" + layer +
+                ", nodeType=" + nodeType +
+                ", ids=" + ids +
+                ", nodeDivisionFeature='" + nodeDivisionFeature + '\'' +
+                ", children=" + children +
+                ", needDoPruning=" + needDoPruning +
+                ", leafClassInfo='" + leafClassInfo + '\'' +
+                '}';
     }
 }

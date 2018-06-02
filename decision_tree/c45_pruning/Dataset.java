@@ -1,11 +1,38 @@
 package c45_pruning;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Dataset {
 
     ArrayList<DataItem> trainDataset;
     ArrayList<DataItem> validateDataset;
     ArrayList<DataItem> testDataset;
+    public DataItem findTrainDataItemWithId(Integer id){
+        for(DataItem item:trainDataset){
+            if(item.getId()==id){
+                return item;
+            }
+        }
+        return null;
+    }
+    public DataItem findValidatingDataItemWithId(Integer id){
+        for(DataItem item:validateDataset){
+            if(item.getId()==id){
+                return item;
+            }
+        }
+        return null;
+    }
+    public DataItem findTestDataItemWithId(Integer id){
+        for(DataItem item:testDataset){
+            if(item.getId()==id){
+                return item;
+            }
+        }
+        return null;
+    }
+
 
     ArrayList<String> features;// all the features in data used to build the decision tree
     String classFeature;// the feature that used to classify the data
@@ -35,6 +62,15 @@ public class Dataset {
             }
         }
         return arrayList;
+    }
+
+    // select all the values  for a feature in the dataItems
+    public static Set<String>getAttributesForThisFeature(ArrayList<DataItem>dataItems,String feature){
+        Set<String> attributes=new HashSet<>();
+        for(DataItem item:dataItems){
+            attributes.add(item.dataItemFeatures.get(feature));
+        }
+        return  attributes;
     }
 
 
